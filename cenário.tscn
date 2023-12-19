@@ -1,0 +1,117 @@
+[gd_scene load_steps=9 format=3 uid="uid://ua24irgoqwx3"]
+
+[ext_resource type="PackedScene" uid="uid://c5kcfc7t8oiw4" path="res://bird.tscn" id="1"]
+[ext_resource type="PackedScene" uid="uid://bvlwrtbecyf6j" path="res://plataformas.tscn" id="2"]
+[ext_resource type="Script" path="res://Timer.gd" id="3"]
+[ext_resource type="Script" path="res://Global.gd" id="4"]
+[ext_resource type="PackedScene" uid="uid://b84nkvlrkhkxp" path="res://ScoreDetector.tscn" id="5"]
+[ext_resource type="Script" path="res://Score.gd" id="6"]
+[ext_resource type="Script" path="res://deathmenu.gd" id="7"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(1213, 143)
+
+[node name="cenario" type="Node2D"]
+script = ExtResource("4")
+
+[node name="fundo" type="Node2D" parent="."]
+z_index = -1
+
+[node name="ColorRect2" type="ColorRect" parent="fundo"]
+offset_left = -63.0
+offset_top = -35.0
+offset_right = -17.0
+offset_bottom = 9.0
+scale = Vector2(26.3388, 15.6184)
+color = Color(0.054902, 0.631373, 0.592157, 1)
+
+[node name="bird" parent="." instance=ExtResource("1")]
+z_index = 0
+position = Vector2(510, 291)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(512, 290)
+
+[node name="plataformas" parent="." instance=ExtResource("2")]
+z_index = 1
+position = Vector2(711, 231)
+
+[node name="plataformas" parent="plataformas" instance=ExtResource("2")]
+position = Vector2(-2, -537)
+
+[node name="chao" type="StaticBody2D" parent="." groups=["plat"]]
+z_index = 1
+
+[node name="ColorRect" type="ColorRect" parent="chao"]
+offset_left = -70.0
+offset_top = 500.0
+offset_right = 1148.0
+offset_bottom = 647.0
+color = Color(0.113725, 0.337255, 0.0235294, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="chao"]
+position = Vector2(541.5, 576.5)
+shape = SubResource("1")
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+script = ExtResource("3")
+
+[node name="score" type="Node2D" parent="."]
+z_index = 2
+
+[node name="Score" type="Label" parent="score"]
+offset_left = 462.0
+offset_top = 30.0
+offset_right = 567.0
+offset_bottom = 94.0
+theme_override_font_sizes/font_size = 35
+text = "00"
+horizontal_alignment = 1
+script = ExtResource("6")
+
+[node name="ScoreDetector" parent="." instance=ExtResource("5")]
+position = Vector2(740, 285)
+
+[node name="deathmenu" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="menu" type="VBoxContainer" parent="deathmenu"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 384.0
+offset_top = 224.0
+offset_right = 623.0
+offset_bottom = 388.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("7")
+
+[node name="morte" type="Label" parent="deathmenu/menu"]
+layout_mode = 2
+text = "Death"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="pressione [Enter] para reiniciar" type="Label" parent="deathmenu/menu"]
+layout_mode = 2
+text = "Press [Enter] to restart"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="menu" type="Button" parent="deathmenu/menu"]
+layout_mode = 2
+text = "Menu"
+
+[node name="Sair" type="Button" parent="deathmenu/menu"]
+layout_mode = 2
+text = "Exit"
+
+[connection signal="death" from="bird" to="deathmenu/menu" method="_on_bird_death"]
+[connection signal="timeout" from="Timer" to="Timer" method="_on_Timer_timeout"]
+[connection signal="pressed" from="deathmenu/menu/menu" to="deathmenu/menu" method="_on_menu_pressed"]
+[connection signal="pressed" from="deathmenu/menu/Sair" to="deathmenu/menu" method="_on_Sair_pressed"]

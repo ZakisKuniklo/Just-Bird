@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvlwrtbecyf6j"]
+
+[ext_resource type="Script" path="res://plataformas.gd" id="1"]
+
+[sub_resource type="RectangleShape2D" id="1"]
+size = Vector2(43, 368)
+
+[node name="plataformas" type="Node2D"]
+
+[node name="plataforma 1" type="StaticBody2D" parent="." groups=["plat"]]
+z_index = -1
+position = Vector2(0, 558)
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="plataforma 1"]
+position = Vector2(30.5, -280)
+shape = SubResource("1")
+
+[node name="ColorRect" type="ColorRect" parent="plataforma 1"]
+offset_left = 8.0
+offset_top = -464.0
+offset_right = 55.0
+offset_bottom = -92.0
+color = Color(0.054902, 0.890196, 0.321569, 1)
